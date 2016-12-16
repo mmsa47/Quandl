@@ -1,0 +1,80 @@
+package test;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.firefox.internal.ProfilesIni;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+public class Test_Case_Execute {
+	
+	static WebDriver driver;
+	public static WebDriver launch_FireFoxbrowser(String url){
+ 		ProfilesIni profile = new ProfilesIni();
+ 		FirefoxProfile myprofile = profile.getProfile("AnyProfileTesterWants");
+	    driver = new FirefoxDriver(myprofile);
+		driver.manage().window().maximize();
+		driver.get(url);
+		return driver;
+	}
+
+	public static WebDriver close_firefoxDriver(WebDriver driver) throws InterruptedException
+ 	{
+ 		Date date = new Date();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss") ;
+ 		
+ 		System.out.println("Web automation Test ends at: " + dateFormat.format(date));
+ 		System.out.println("Closing the browser in three seconds.");
+		Thread.sleep(3000);
+		driver.quit();
+		return driver;
+ 	}
+	
+	public static void wait_and_click(WebDriver driver, WebElement element){
+		WebDriverWait wait = new WebDriverWait(driver,30);
+		wait.until(ExpectedConditions.elementToBeClickable(element)).click();
+	}
+	
+	
+	@BeforeClass
+	public static void launch_URL() throws InterruptedException{
+		String url ="http://www.flyertown.ca";
+		launch_FireFoxbrowser(url);
+		System.out.println(url +" URL is launched.");
+		//waiting for few seconds 
+		Thread.sleep(5000);
+	}
+	@Test
+	public void test_case(){
+		driver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
+		System.out.println("Change Language to French Test case is starting");
+		wait_and_click(driver,driver.findElement(By.xpath("/html/body/div[1]/div[1]")));
+		System.out.println("Click on Settings");
+		driver.findElement(By.xpath("/html/body/div[3]/div[2]/div/div/div/div/div[1]/div/div[2]/div[3]")).click();
+		//wait_and_click(driver, driver.findElement(By.xpath("/html/body/div[3]/div[2]/div/div/div/div/div[1]/div/div[2]/div[3]")));
+		System.out.println("Click on click on En-Fransic");
+		wait_and_click(driver, driver.findElement(By.xpath("/html/body/div[3]/div[2]/div/div/div/div/div[1]/div/div[2]/div[4]/div[2]")));
+		System.out.println("Switch to French.");
+	}
+	
+	@AfterClass
+	public static void postTest() throws InterruptedException{
+		driver = close_firefoxDriver(driver);
+	}
+	
+	
+	
+	
+	
+
+}

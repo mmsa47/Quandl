@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="Test_Case_Execute" project="Flipp_test" tests="2" started="2" failures="0" errors="0" ignored="0">
+  <testsuite name="test.Test_Case_Execute" time="5.337">
+    <testcase name="footer_career_Test" classname="test.Test_Case_Execute" time="0.45"/>
+    <testcase name="logo_Quandl_Test" classname="test.Test_Case_Execute" time="4.887"/>
+  </testsuite>
+</testrun>

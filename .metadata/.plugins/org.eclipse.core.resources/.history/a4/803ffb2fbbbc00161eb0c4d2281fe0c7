@@ -1,0 +1,61 @@
+package test;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.firefox.internal.ProfilesIni;
+
+public class Test_Case_Execute {
+	
+	static WebDriver driver;
+	public static WebDriver launch_FireFoxbrowser(String url){
+ 		ProfilesIni profile = new ProfilesIni();
+ 		FirefoxProfile myprofile = profile.getProfile("AnyProfileTesterWants");
+	    driver = new FirefoxDriver(myprofile);
+		driver.manage().window().maximize();
+		driver.get(url);
+		return driver;
+	}
+
+	public static WebDriver close_firefoxDriver(WebDriver driver) throws InterruptedException
+ 	{
+ 		Date date = new Date();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss") ;
+ 		
+ 		System.out.println("Web automation Test ends at: " + dateFormat.format(date));
+ 		System.out.println("Closing the browser in three seconds.");
+		Thread.sleep(3000);
+		driver.quit();
+		return driver;
+ 	}	
+	@BeforeClass
+	public static void launch_URL() throws InterruptedException{
+		String url ="http://www.flyertown.ca";
+		launch_FireFoxbrowser(url);
+		System.out.println(url +" URL is launcheds.");
+		//waiting for few seconds 
+		Thread.sleep(5000);
+	}
+	@Test
+	public void test_case(){
+		System.out.println("test");
+	}
+	
+	@AfterClass
+	public static void postTest() throws InterruptedException{
+		driver = close_firefoxDriver(driver);
+	}
+	
+	
+	
+	
+	
+
+}

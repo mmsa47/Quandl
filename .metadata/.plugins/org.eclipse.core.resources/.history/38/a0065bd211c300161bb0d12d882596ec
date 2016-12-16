@@ -1,0 +1,78 @@
+package test;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.firefox.internal.ProfilesIni;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
+
+public class Test_Case_Execute {
+	
+	static WebDriver driver;
+	public static WebDriver launch_FireFoxbrowser(String url){
+ 		ProfilesIni profile = new ProfilesIni();
+ 		FirefoxProfile myprofile = profile.getProfile("AnyProfileTesterWants");
+	    driver = new FirefoxDriver(myprofile);
+		driver.manage().window().maximize();
+		driver.get(url);
+		return driver;
+	}
+
+	public static WebDriver close_firefoxDriver(WebDriver driver) throws InterruptedException
+ 	{
+ 		Date date = new Date();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss") ;
+ 		
+ 		System.out.println("Web automation Test ends at: " + dateFormat.format(date));
+ 		System.out.println("Closing the browser in three seconds.");
+		Thread.sleep(3000);
+		driver.quit();
+		return driver;
+ 	}
+	
+	public static void wait_and_click(WebDriver driver, WebElement element){
+		WebDriverWait wait = new WebDriverWait(driver,30);
+		wait.until(ExpectedConditions.elementToBeClickable(element)).click();
+	}
+	
+	
+	@BeforeClass
+	public static void launch_URL() throws InterruptedException{
+		String url ="http://www.quandl.com";
+		launch_FireFoxbrowser(url);
+		System.out.println(url +": URL is launched.");
+		//waiting for few seconds 
+		Thread.sleep(5000);
+	}
+	@Test
+	public void logo_Quandl(){
+		driver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
+		WebElement e1 =driver.findElement(By.xpath("//*[@class='quandl-logo qa-quandl-logo primary-nav__nav-block ember-view active']"));
+		System.out.println(e1.getAttribute("herf"));
+		/*int numberOfLogos = driver.findElements(By.xpath("//*[@class='quandl-logo qa-quandl-logo primary-nav__nav-block ember-view active'")).size();
+		WebElement logo = driver.findElement(By.linkText("Quandl"));
+		if(numberOfLogos>=2 || numberOfLogos<=0){
+				Assert.fail();
+		}
+		String test = logo.getAttribute("herf");
+		System.out.println(test);*/
+
+	}
+	
+	@AfterClass
+	public static void postTest() throws InterruptedException{
+		driver = close_firefoxDriver(driver);
+	}
+
+}
